@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -17,12 +17,14 @@ def get_users():
     conn.close()
     return render_template('data.html', data=data)
 
-@app.route('/create_user/<name>')
-def create_user(name):
+@app.route('/create_user', methods=['POST'])
+def create_user():
+    username = request.form.get('username')
+    email = request.form.get('email')
     from db import get_db_connection
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO mytable (name) VALUES (%s)', (name,))
+    cursor.execute('INSERT INTO mytable (name, email) VALUES (%s, %s)', (username, email))
     conn.commit()
     cursor.close()
     conn.close()
