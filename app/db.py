@@ -3,7 +3,7 @@ import os
 from psycopg2 import connect
 from dotenv import load_dotenv
 
-laod_dotenv()
+load_dotenv()
 def get_db_connection():
     conn = connect(
         host=os.getenv('DB_HOST', 'localhost'),
